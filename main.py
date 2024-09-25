@@ -23,9 +23,9 @@ def turno_computadora(intento_min, intento_max):
     print(f"Turno del ordenador. El ordenador adivina: {numero_ordenador}.")  # Mostrar la adivinanza del ordenador
 
     if numero_ordenador < numero_a_adivinar:
-        return "El número del ordenador es mayor.", False, intento_min, numero_ordenador - 1  # Ajusta el mínimo posible
+        return "El número del ordenador es menor.", False, numero_ordenador + 1, intento_max  # Ajusta el mínimo posible
     elif numero_ordenador > numero_a_adivinar:
-        return "El número del ordenador es menor.", False, numero_ordenador + 1, intento_max  # Ajusta el máximo posible
+        return "El número del ordenador es mayor.", False, intento_min, numero_ordenador - 1  # Ajusta el máximo posible
     else:
         return "¡El ordenador ha adivinado correctamente!", True, intento_min, intento_max
 

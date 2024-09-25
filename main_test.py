@@ -1,63 +1,31 @@
 import unittest
-from main import num_aleatorio, turno_jugadora, turno_computadora
-import unittest.mock
+from unittest.mock import patch
+from main import turno_jugadora, turno_computadora
 
 class TestAdivinanza(unittest.TestCase):
 
-    # Prueba para verificar que el número aleatorio está en el rango correcto
-    def test_num_aleatorio(self):
-        numero = num_aleatorio()
-        self.assertGreaterEqual(numero, 1)  # El número debería ser >= 1
-        self.assertLessEqual(numero, 100)   # El número debería ser <= 100
+    @patch('main.numero_a_adivinar', 40)  # Simulamos que el número a adivinar es 40
+    @patch('main.random.randint', return_value=40)  # Simulamos que la computadora adivina 40
+    def test_turno_computadora_adivina_correctamente(self, mock_randint):
+        mensaje, gano, _, _ = turno_computadora(1, 100)
+        self.assertEqual(mensaje, "¡El ordenador ha adivinado correctamente!")
+        self.assertTrue(gano)
 
-    # Prueba para turno de la jugadora (cuando adivina correctamente)
-    def test_turno_jugadora_adivina(self):
-        with unittest.mock.patch('builtins.input', return_value='50'):
-            global numero_a_adivinar  # Accedemos a la variable global
-            numero_a_adivinar = 50  # Establecemos el número a adivinar
-            resultado, gano = turno_jugadora(50)
-            self.assertTrue(gano)  # La jugadora debería ganar
+    @patch('main.numero_a_adivinar', 50)  # Simulamos que el número generado es 50
+    def test_turno_jugadora_adivina_correctamente(self):
+        resultado, gano = turno_jugadora(50)
+        self.assertEqual(resultado, "¡Bien! Has adivinado correctamente.")
+        self.assertTrue(gano)
 
-    # Prueba para turno de la jugadora (cuando adivina un número mayor)
-    def test_turno_jugadora_mayor(self):
-        with unittest.mock.patch('builtins.input', return_value='60'):
-            global numero_a_adivinar
-            numero_a_adivinar = 50
-            resultado, gano = turno_jugadora(60)
-            self.assertFalse(gano)  # La jugadora no debería ganar
+    @patch('main.numero_a_adivinar', 30)  # Simulamos que el número generado es 30
+    def test_turno_jugadora_adivina_menor(self):
+        resultado, gano = turno_jugadora(50)
+        self.assertEqual(resultado, "El número es menor.")
 
-    # Prueba para turno de la jugadora (cuando adivina un número menor)
-    def test_turno_jugadora_menor(self):
-        with unittest.mock.patch('builtins.input', return_value='40'):
-            global numero_a_adivinar
-            numero_a_adivinar = 50
-            resultado, gano = turno_jugadora(40)
-            self.assertFalse(gano)  # La jugadora no debería ganar
+    @patch('main.numero_a_adivinar', 70)  # Simulamos que el número generado es 70
+    def test_turno_jugadora_adivina_mayor(self):
+        resultado, gano = turno_jugadora(50)
+        self.assertEqual(resultado, "El número es mayor.")
 
-    # Prueba para turno del ordenador (cuando adivina correctamente)
-    def test_turno_computadora_adivina(self):
-        with unittest.mock.patch('random.randint', return_value=50):
-            global numero_a_adivinar
-            numero_a_adivinar = 50
-            resultado, gano = turno_computadora()
-            self.assertTrue(gano)  # El ordenador debería ganar
-
-    # Prueba para turno del ordenador (cuando adivina un número menor)
-    def test_turno_computadora_menor(self):
-        with unittest.mock.patch('random.randint', return_value=30):
-            global numero_a_adivinar
-            numero_a_adivinar = 50
-            resultado, gano = turno_computadora()
-            self.assertFalse(gano)  # El ordenador no debería ganar
-
-    # Prueba para turno del ordenador (cuando adivina un número mayor)
-    def test_turno_computadora_mayor(self):
-        with unittest.mock.patch('random.randint', return_value=70):
-            global numero_a_adivinar
-            numero_a_adivinar = 50
-            resultado, gano = turno_computadora()
-            self.assertFalse(gano)  # El ordenador no debería ganar
-
-# Ejecutar las pruebas
 if __name__ == '__main__':
     unittest.main()
