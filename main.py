@@ -68,7 +68,7 @@ def jugar():
 
         # Pregunta si la jugadora quiere jugar de nuevo
         jugar_nuevamente = input("\n¿Quieres jugar de nuevo? (sí/no): ").strip().lower()  # Se asegura de que la respuesta esté en minúsculas y sin espacios.
-        if jugar_nuevamente != "sí":  # Si la respuesta no es "sí", el juego termina.
+        if jugar_nuevamente != "si":  # Si la respuesta no es "sí", el juego termina.
             print("¡Gracias por jugar! ¡Hasta la próxima!")
             break  # Sale del bucle principal y termina el juego.
 
